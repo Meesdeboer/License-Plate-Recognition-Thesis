@@ -8,8 +8,8 @@ import keras
 import pickle
 
 reader = easyocr.Reader(['en'], recognizer=False)
-# YOLOv8_model = YOLO("../models/yolo-obb-s-100ep.pt")
-YOLOv8_model = YOLO("../models/data-aug-obb-100.pt")
+# YOLOv8_model = YOLO("../models/data-aug-obb-100.pt")
+YOLOv8_model = YOLO("../models/yolo-obb-light-60ep.pt")
 OCR_model = keras.models.load_model('../models/ocr_model.h5')
 lb = pickle.load(open('../models/label_encoder.pkl', 'rb'))
 
@@ -129,6 +129,8 @@ def thresholding(img):
     _, im_gray_th = cv2.threshold(im_gray_th_otsu, 128, 255, cv2.THRESH_BINARY)
 
     im_gray_th = cv2.bitwise_not(im_gray_th)
+
+    cv2.imwrite("gray.jpg", im_gray_th)
 
     return Image.fromarray(im_gray_th)
 
