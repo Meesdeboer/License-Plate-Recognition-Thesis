@@ -9,7 +9,7 @@ import pickle
 
 reader = easyocr.Reader(['en'], recognizer=False)
 # YOLOv8_model = YOLO("../models/data-aug-obb-100.pt")
-YOLOv8_model = YOLO("../models/yolo-obb-light-60ep.pt")
+YOLOv8_model = YOLO("../models/yolo-obb-light-100ep.pt")
 OCR_model = keras.models.load_model('../models/ocr_model.h5')
 lb = pickle.load(open('../models/label_encoder.pkl', 'rb'))
 
