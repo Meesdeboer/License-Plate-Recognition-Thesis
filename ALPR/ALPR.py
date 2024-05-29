@@ -130,8 +130,6 @@ def thresholding(img):
 
     im_gray_th = cv2.bitwise_not(im_gray_th)
 
-    cv2.imwrite("gray.jpg", im_gray_th)
-
     return Image.fromarray(im_gray_th)
 
 def get_binary_lp_cutout(path_to_img):
