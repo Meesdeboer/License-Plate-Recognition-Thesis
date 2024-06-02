@@ -20,7 +20,7 @@ def crop_license_plate(img):
     Returns:
     - Image: the cropped license plate
     """
-    results = YOLOv8_model(img)
+    results = YOLOv8_model(img, conf = 0.025, max_det = 1)
 
     detections = sv.Detections.from_ultralytics(results[0])
     xyxyxyxy = detections[0].data['xyxyxyxy'][0]
