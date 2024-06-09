@@ -9,9 +9,12 @@ import pickle
 
 reader = easyocr.Reader(['en'], recognizer=False)
 # YOLOv8_model = YOLO("../models/data-aug-obb-100.pt")
-YOLOv8_model = YOLO("../models/yolo-obb-light-100ep.pt")
-OCR_model = keras.models.load_model('../models/ocr_model.h5')
-lb = pickle.load(open('../models/label_encoder.pkl', 'rb'))
+# YOLOv8_model = YOLO("../models/yolo-obb-light-100ep.pt")
+YOLOv8_model = YOLO("../models/self-learning-130ep.pt")
+# OCR_model = keras.models.load_model('../models/ocr_model.h5')
+OCR_model = keras.models.load_model('../models/ocr_model_combined.h5')
+# lb = pickle.load(open('../models/label_encoder.pkl', 'rb'))
+lb = pickle.load(open('../models/label_encoder_combined.pkl', 'rb'))
 
 def crop_license_plate(img):
     """
@@ -118,15 +121,7 @@ def thresholding(img):
     img.save("temp.jpg")
     img = cv2.imread("temp.jpg", cv2.IMREAD_GRAYSCALE)
 
-    
-    kernel = np.ones((5,5),np.uint8)
-    opening = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
-
-    closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
-
-    _, im_gray_th_otsu = cv2.threshold(closing, 128, 192, cv2.THRESH_OTSU)
-
-    _, im_gray_th = cv2.threshold(im_gray_th_otsu, 128, 255, cv2.THRESH_BINARY)
+    _, im_gray_th = cv2.threshold(img, 0, 255, cv2.THRESH_OTSU)
 
     im_gray_th = cv2.bitwise_not(im_gray_th)
 
@@ -178,7 +173,7 @@ def predict_characters(characters, idx):
     Returns:
     - string: string of predicted characters
     """
-    predicted_characters = ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X']
+    predicted_characters = ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']
     for i, char in enumerate(characters):
         if i == idx[0] or i == idx[1]:
             predicted_characters[i] = '-'
